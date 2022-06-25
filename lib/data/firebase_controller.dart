@@ -8,4 +8,19 @@ class FirebaseController {
     CollectionReference users = firebase.collection('users');
     return users.get();
   }
+
+  addUser(Map<String, Object> data) {
+    CollectionReference users = firebase.collection('users');
+    users.add(data);
+  }
+
+  updateUser({required String uuid, Map<String, Object?>? data}) {
+    CollectionReference users = firebase.collection('users');
+    users.doc(uuid).update(data ?? {});
+  }
+
+  deleteUser(String uuid) {
+    CollectionReference users = firebase.collection('users');
+    users.doc(uuid).delete();
+  }
 }

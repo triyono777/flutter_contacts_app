@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts_app/data/firebase_controller.dart';
 
 import '../data/data_kontak.dart';
 import '../widgets/item_form_widget.dart';
@@ -43,7 +44,7 @@ class _EditKontakScreenState extends State<EditKontakScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                dataKontak.removeWhere((element) => element["id"] == widget.id);
+                FirebaseController().deleteUser(widget.id);
                 Navigator.pop(context, true);
               },
               icon: Icon(Icons.delete))
@@ -62,22 +63,11 @@ class _EditKontakScreenState extends State<EditKontakScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              dataKontak.where((element) {
-                if (element["id"] == widget.id) {
-                  element["nama"] = namaController.text;
-                  element["nomor_telp"] = noTelpController.text;
-                  element["alamat"] = alamatController.text;
-                  return element;
-                }
-                return element;
-              }).toList();
-              // dataKontak.remove();
-              // dataKontak. ({
-              //   "nama": namaController.text,
-              //   "nomor_telp": noTelpController.text,
-              //   "alamat": alamatController.text,
-              // });
-              print(dataKontak.toList());
+              FirebaseController().updateUser(uuid: widget.id, data: {
+                "nama": namaController.text,
+                "nomor_telp": noTelpController.text,
+                "alamat": alamatController.text,
+              });
               Navigator.pop(context, true);
             },
             child: Text('Simpan'),

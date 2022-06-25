@@ -24,15 +24,26 @@ class _HomeScreenState extends State<HomeScreen> {
       body: FutureBuilder<QuerySnapshot>(
           future: FirebaseController().getUsers(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
-            } else {
-              if (!snapshot.hasData) {
-                return Center(child: Text('No data'));
-              } else {
-                return bodyWidget(snapshot);
-              }
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                print(ConnectionState.none);
+
+                break;
+              case ConnectionState.waiting:
+                return CircularProgressIndicator();
+              case ConnectionState.active:
+                print(ConnectionState.active);
+                break;
+              case ConnectionState.done:
+                if (!snapshot.hasData) {
+                  return Center(child: Text('No data'));
+                } else {
+                  return bodyWidget(snapshot);
+                }
+              default:
+                return Text('-');
             }
+            return SizedBox();
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -74,8 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 setState(() {});
               }
             },
-            nama: dataKontak[index]['nama'],
-            noTelp: dataKontak[index]['nomor_telp'],
+            nama: allData?[index]['nama'],
+            noTelp: allData?[index]['nomor_telp'],
           );
         });
   }

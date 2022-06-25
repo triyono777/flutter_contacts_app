@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts_app/data/firebase_controller.dart';
 
 import '../data/data_kontak.dart';
 import '../widgets/item_form_widget.dart';
@@ -35,13 +36,18 @@ class _TambahKontakScreenState extends State<TambahKontakScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              dataKontak.add({
-                "id": Random().nextInt(100).toString(),
+              // dataKontak.add({
+              //   "id": Random().nextInt(100).toString(),
+              //   "nama": namaController.text,
+              //   "nomor_telp": noTelpController.text,
+              //   "alamat": alamatController.text,
+              // });
+              // print(dataKontak.toList());
+              FirebaseController().addUser({
                 "nama": namaController.text,
                 "nomor_telp": noTelpController.text,
                 "alamat": alamatController.text,
               });
-              print(dataKontak.toList());
               Navigator.pop(context, true);
             },
             child: Text('Simpan'),
