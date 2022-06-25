@@ -36,43 +36,74 @@ class _EditKontakScreenState extends State<EditKontakScreen> {
   }
 
   @override
+  void dispose() {
+    namaController.dispose();
+    noTelpController.dispose();
+    alamatController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    widget.nama;
+    // widget.nama;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tambah kontak'),
+        title: Text('Edit kontak'),
         actions: [
           IconButton(
-              onPressed: () {
-                FirebaseController().deleteUser(widget.id);
-                Navigator.pop(context, true);
+              onPressed: () async {
+                var hasil = await showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          content: Text('Delete?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, false),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              style: ButtonStyle(
+                                  foregroundColor:
+                                      MaterialStateColor.resolveWith(
+                                          (states) => Colors.red)),
+                              onPressed: () => Navigator.pop(context, true),
+                              child: const Text('Delete'),
+                            ),
+                          ],
+                        ));
+                if (hasil == true) {
+                  FirebaseController().deleteUser(widget.id);
+                  Navigator.pop(context, true);
+                }
               },
               icon: Icon(Icons.delete))
         ],
       ),
-      body: Column(
-        children: [
-          ItemFormWidget(controller: namaController, label: 'Nama'),
-          ItemFormWidget(
-            controller: noTelpController,
-            label: 'Nomor Telepon',
-          ),
-          ItemFormWidget(
-            controller: alamatController,
-            label: 'Alamat',
-          ),
-          ElevatedButton(
-            onPressed: () {
-              FirebaseController().updateUser(uuid: widget.id, data: {
-                "nama": namaController.text,
-                "nomor_telp": noTelpController.text,
-                "alamat": alamatController.text,
-              });
-              Navigator.pop(context, true);
-            },
-            child: Text('Simpan'),
-          ),
-        ],
+      body: Form(
+        child: Column(
+          children: [
+            ItemFormWidget(controller: namaController, label: 'Nama'),
+            ItemFormWidget(
+              controller: noTelpController,
+              label: 'Nomor Telepon',
+            ),
+            ItemFormWidget(
+              controller: alamatController,
+              label: 'Alamat',
+            ),
+            ElevatedButton(
+              onPressed: () {
+                FirebaseController().updateUser(uuid: widget.id, data: {
+                  "nama": namaController.text,
+                  "nomor_telp": noTelpController.text,
+                  "alamat": alamatController.text,
+                });
+                Navigator.pop(context, true);
+              },
+              child: Text('Simpan'),
+            ),
+          ],
+        ),
       ),
     );
   }

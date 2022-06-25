@@ -17,42 +17,53 @@ class _TambahKontakScreenState extends State<TambahKontakScreen> {
   TextEditingController namaController = TextEditingController();
   TextEditingController noTelpController = TextEditingController();
   TextEditingController alamatController = TextEditingController();
+
+  @override
+  void dispose() {
+    namaController.dispose();
+    noTelpController.dispose();
+    alamatController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Tambah kontak'),
       ),
-      body: Column(
-        children: [
-          ItemFormWidget(controller: namaController, label: 'Nama'),
-          ItemFormWidget(
-            controller: noTelpController,
-            label: 'Nomor Telepon',
-          ),
-          ItemFormWidget(
-            controller: alamatController,
-            label: 'Alamat',
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // dataKontak.add({
-              //   "id": Random().nextInt(100).toString(),
-              //   "nama": namaController.text,
-              //   "nomor_telp": noTelpController.text,
-              //   "alamat": alamatController.text,
-              // });
-              // print(dataKontak.toList());
-              FirebaseController().addUser({
-                "nama": namaController.text,
-                "nomor_telp": noTelpController.text,
-                "alamat": alamatController.text,
-              });
-              Navigator.pop(context, true);
-            },
-            child: Text('Simpan'),
-          ),
-        ],
+      body: Form(
+        child: Column(
+          children: [
+            ItemFormWidget(controller: namaController, label: 'Nama'),
+            ItemFormWidget(
+              controller: noTelpController,
+              label: 'Nomor Telepon',
+            ),
+            ItemFormWidget(
+              controller: alamatController,
+              label: 'Alamat',
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // dataKontak.add({
+                //   "id": Random().nextInt(100).toString(),
+                //   "nama": namaController.text,
+                //   "nomor_telp": noTelpController.text,
+                //   "alamat": alamatController.text,
+                // });
+                // print(dataKontak.toList());
+                FirebaseController().addUser({
+                  "nama": namaController.text,
+                  "nomor_telp": noTelpController.text,
+                  "alamat": alamatController.text,
+                });
+                Navigator.pop(context, true);
+              },
+              child: Text('Simpan'),
+            ),
+          ],
+        ),
       ),
     );
   }

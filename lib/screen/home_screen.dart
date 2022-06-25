@@ -32,8 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
               case ConnectionState.waiting:
                 return CircularProgressIndicator();
               case ConnectionState.active:
-                print(ConnectionState.active);
-                break;
+              // print(ConnectionState.active);
+              // break;
               case ConnectionState.done:
                 if (!snapshot.hasData) {
                   return Center(child: Text('No data'));
